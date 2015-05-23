@@ -1,0 +1,41 @@
+{
+    "name": "php-http/guzzle6-adapter",
+    "description": "Guzzle 6 HTTP adapter",
+    "license": "MIT",
+    "keywords": ["guzzle", "http"],
+    "homepage": "http://php-http.org",
+    "authors": [
+        {
+            "name": "Eric GELOEN",
+            "email": "geloen.eric@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "php-http/adapter-core": "dev-internal_separation"
+    },
+    "require-dev": {
+        "ext-curl": "*",
+        "php-http/adapter-integration-tests": "dev-internal_separation"
+    },
+    "provide": {
+        "php-http/adapter-implementation": "0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Http\\Adapter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Http\\Adapter\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}

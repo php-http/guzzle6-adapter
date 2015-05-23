@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Guzzle 6 Adapter Test Suite">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="TEST_SERVER" value="http://127.0.0.1:10000/server.php" />
+    </php>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
