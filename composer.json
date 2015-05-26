@@ -13,7 +13,7 @@
     "require": {
         "php": ">=5.4",
         "php-http/adapter-core": "dev-internal_separation",
-        "guzzlehttp/guzzle": "6.x-dev"
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "ext-curl": "*",
