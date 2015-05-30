@@ -40,6 +40,11 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 If you discover any security related issues, please contact us at [security@php-http.org](mailto:security@php-http.org).
 
 
+## Credits
+
+Thanks to [David de Boer](https://github.com/ddeboer) for implementing this adapter.
+
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
