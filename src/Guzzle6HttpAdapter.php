@@ -17,13 +17,14 @@ use GuzzleHttp\Pool;
 use Http\Adapter\Common\Exception\HttpAdapterException;
 use Http\Adapter\Common\Exception\MultiHttpAdapterException;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Guzzle 6 HTTP adapter
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-class Guzzle6HttpAdapter implements PsrHttpAdapter
+class Guzzle6HttpAdapter implements HttpAdapter
 {
     /**
      * @param Client $client
@@ -41,7 +42,7 @@ class Guzzle6HttpAdapter implements PsrHttpAdapter
         try {
             return $this->client->send($request);
         } catch (RequestException $exception) {
-            throw new $this->createException($exception);
+            throw $this->createException($exception);
         }
     }
 
@@ -56,14 +57,18 @@ class Guzzle6HttpAdapter implements PsrHttpAdapter
         );
 
         $exceptions = [];
+        $responses = [];
+
         foreach ($results as $result) {
-            if ($result instanceof TransferException) {
+            if ($result instanceof ResponseInterface) {
+                $responses[] = $result;
+            } elseif ($result instanceof RequestException) {
                 $exceptions[] = $this->createException($result);
             }
         }
 
         if (count($exceptions) > 0) {
-            throw new MultiHttpAdapterException($exceptions);
+            throw new MultiHttpAdapterException($exceptions, $responses);
         }
 
         return $results;
