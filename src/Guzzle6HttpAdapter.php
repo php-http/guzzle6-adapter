@@ -37,10 +37,12 @@ class Guzzle6HttpAdapter implements HttpAdapter
     /**
      * {@inheritdoc}
      */
-    public function sendRequest(RequestInterface $request)
+    public function sendRequest(RequestInterface $request, array $options = [])
     {
+        $options = $this->buildOptions($options);
+
         try {
-            return $this->client->send($request);
+            return $this->client->send($request, $options);
         } catch (RequestException $exception) {
             throw $this->createException($exception);
         }
@@ -49,11 +51,14 @@ class Guzzle6HttpAdapter implements HttpAdapter
     /**
      * {@inheritdoc}
      */
-    public function sendRequests(array $requests)
+    public function sendRequests(array $requests, array $options = [])
     {
+        $options = $this->buildOptions($options);
+
         $results = Pool::batch(
             $this->client,
-            $requests
+            $requests,
+            $options
         );
 
         $exceptions = [];
@@ -100,5 +105,24 @@ class Guzzle6HttpAdapter implements HttpAdapter
         $adapterException->setRequest($exception->getRequest());
 
         return $adapterException;
+    }
+
+    /**
+     * Builds options for Guzzle
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    private function buildOptions(array $options)
+    {
+        $guzzleOptions = [];
+
+        if (isset($options['timeout'])) {
+            $guzzleOptions['connect_timeout'] = $options['timeout'];
+            $guzzleOptions['timeout'] = $options['timeout'];
+        }
+
+        return $guzzleOptions;
     }
 }
