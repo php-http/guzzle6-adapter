@@ -16,12 +16,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "php-http/adapter-common": "dev-client_separation",
+        "php-http/adapter-common": "dev-master",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/adapter-integration-tests": "dev-client_separation"
+        "php-http/adapter-integration-tests": "dev-contract_changes"
     },
     "provide": {
         "php-http/adapter-implementation": "0.1"
