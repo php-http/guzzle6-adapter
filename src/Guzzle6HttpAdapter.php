@@ -12,6 +12,7 @@
 namespace Http\Adapter;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use Http\Adapter\Common\Exception\HttpAdapterException;
@@ -27,9 +28,14 @@ use Psr\Http\Message\ResponseInterface;
 class Guzzle6HttpAdapter implements HttpAdapter
 {
     /**
-     * @param Client $client
+     * @var ClientInterface
      */
-    public function __construct(Client $client = null)
+    private $client;
+
+    /**
+     * @param ClientInterface|null $client
+     */
+    public function __construct(ClientInterface $client = null)
     {
         $this->client = $client ?: new Client();
     }
@@ -43,8 +49,8 @@ class Guzzle6HttpAdapter implements HttpAdapter
 
         try {
             return $this->client->send($request, $options);
-        } catch (RequestException $exception) {
-            throw $this->createException($exception);
+        } catch (RequestException $e) {
+            throw $this->createException($e);
         }
     }
 
@@ -55,11 +61,7 @@ class Guzzle6HttpAdapter implements HttpAdapter
     {
         $options = $this->buildOptions($options);
 
-        $results = Pool::batch(
-            $this->client,
-            $requests,
-            $options
-        );
+        $results = Pool::batch($this->client, $requests, $options);
 
         $exceptions = [];
         $responses = [];
@@ -88,7 +90,7 @@ class Guzzle6HttpAdapter implements HttpAdapter
     }
 
     /**
-     * Convert Guzzle exception into HttpAdapter exception
+     * Converts a Guzzle exception into an HttpAdapter exception
      *
      * @param RequestException $exception
      *
@@ -116,7 +118,10 @@ class Guzzle6HttpAdapter implements HttpAdapter
      */
     private function buildOptions(array $options)
     {
-        $guzzleOptions = [];
+        $guzzleOptions = [
+            'http_errors'     => false,
+            'allow_redirects' => false,
+        ];
 
         if (isset($options['timeout'])) {
             $guzzleOptions['connect_timeout'] = $options['timeout'];

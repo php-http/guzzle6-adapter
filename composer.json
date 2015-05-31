@@ -8,6 +8,10 @@
         {
             "name": "David de Boer",
             "email": "david@ddeboer.nl"
+        },
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
         }
     ],
     "require": {
