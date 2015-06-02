@@ -1,8 +1,8 @@
 filter:
   paths: [src/*]
+checks:
+  php:
+    code_rating: true
+    duplication: true
 tools:
-  php_analyzer: true
-  php_mess_detector: true
-  php_pdepend: true
-  external_code_coverage:
-    timeout: '600'
+  external_code_coverage: true
