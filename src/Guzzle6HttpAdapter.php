@@ -15,8 +15,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
-use Http\Adapter\Common\Exception\HttpAdapterException;
-use Http\Adapter\Common\Exception\MultiHttpAdapterException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -75,7 +73,7 @@ class Guzzle6HttpAdapter implements HttpAdapter
         }
 
         if (count($exceptions) > 0) {
-            throw new MultiHttpAdapterException($exceptions, $responses);
+            throw new Exception\MultiHttpAdapterException($exceptions, $responses);
         }
 
         return $results;
@@ -94,11 +92,11 @@ class Guzzle6HttpAdapter implements HttpAdapter
      *
      * @param RequestException $exception
      *
-     * @return HttpAdapterException
+     * @return Exception\HttpAdapterException
      */
     private function createException(RequestException $exception)
     {
-        $adapterException = new HttpAdapterException(
+        $adapterException = new Exception\HttpAdapterException(
             $exception->getMessage(),
             0,
             $exception
