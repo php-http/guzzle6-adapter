@@ -6,3 +6,6 @@ checks:
     duplication: true
 tools:
   external_code_coverage: true
+  php_code_sniffer:
+    config:
+      standard: "PSR2"
