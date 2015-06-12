@@ -5,7 +5,6 @@
 [![Build Status](https://img.shields.io/travis/php-http/guzzle6-adapter.svg?style=flat-square)](https://travis-ci.org/php-http/guzzle6-adapter)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/php-http/guzzle6-adapter.svg?style=flat-square)](https://scrutinizer-ci.com/g/php-http/guzzle6-adapter)
 [![Quality Score](https://img.shields.io/scrutinizer/g/php-http/guzzle6-adapter.svg?style=flat-square)](https://scrutinizer-ci.com/g/php-http/guzzle6-adapter)
-[![HHVM Status](https://img.shields.io/hhvm/php-http/guzzle6-adapter.svg?style=flat-square)](http://hhvm.h4cc.de/package/php-http/guzzle6-adapter)
 [![Total Downloads](https://img.shields.io/packagist/dt/php-http/guzzle6-adapter.svg?style=flat-square)](https://packagist.org/packages/php-http/guzzle6-adapter)
 
 **Guzzle 6 HTTP adapter.**
