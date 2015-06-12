@@ -20,7 +20,9 @@ $ composer require php-http/guzzle6-adapter
 ```
 
 
-## Usage
+## Documentation
+
+Please see the [official documentation](http://php-http.readthedocs.org/en/latest/).
 
 
 ## Testing

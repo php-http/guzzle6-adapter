@@ -19,8 +19,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Guzzle 6 HTTP adapter
- *
  * @author David de Boer <david@ddeboer.nl>
  */
 class Guzzle6HttpAdapter implements HttpAdapter

@@ -16,12 +16,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "php-http/adapter": "^0.1@dev",
+        "php-http/adapter": "^0.1",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/adapter-integration-tests": "^0.1@dev"
+        "php-http/adapter-integration-tests": "^0.1"
     },
     "provide": {
         "php-http/adapter-implementation": "0.1"
