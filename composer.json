@@ -15,13 +15,14 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.5.0",
         "php-http/httplug": "^1.0@dev",
+        "php-http/utils": "^0.1@dev",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/adapter-integration-tests": "^0.1"
+        "php-http/adapter-integration-tests": "^0.2@dev"
     },
     "provide": {
         "php-http/client-implementation": "1.0"

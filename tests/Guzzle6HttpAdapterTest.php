@@ -19,11 +19,6 @@ use Http\Adapter\Guzzle6HttpAdapter;
  */
 abstract class Guzzle6HttpAdapterTest extends HttpAdapterTest
 {
-    public function testGetName()
-    {
-        $this->assertSame('guzzle6', $this->httpAdapter->getName());
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -15,13 +15,19 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
+use Http\Client\Exception\BatchException;
+use Http\Client\Exception\HttpException;
+use Http\Client\Exception\NetworkException;
+use Http\Client\Exception;
+use Http\Client\HttpClient;
+use Http\Client\Utils\BatchResult;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author David de Boer <david@ddeboer.nl>
  */
-class Guzzle6HttpAdapter implements HttpAdapter
+class Guzzle6HttpAdapter implements HttpClient
 {
     /**
      * @var ClientInterface
@@ -29,7 +35,7 @@ class Guzzle6HttpAdapter implements HttpAdapter
     private $client;
 
     /**
-     * @param ClientInterface|null $client
+     * @param ClientInterface|null $client  Guzzle client
      */
     public function __construct(ClientInterface $client = null)
     {
@@ -39,12 +45,10 @@ class Guzzle6HttpAdapter implements HttpAdapter
     /**
      * {@inheritdoc}
      */
-    public function sendRequest(RequestInterface $request, array $options = [])
+    public function sendRequest(RequestInterface $request)
     {
-        $options = $this->buildOptions($options);
-
         try {
-            return $this->client->send($request, $options);
+            return $this->client->send($request);
         } catch (RequestException $e) {
             throw $this->createException($e);
         }
@@ -53,77 +57,41 @@ class Guzzle6HttpAdapter implements HttpAdapter
     /**
      * {@inheritdoc}
      */
-    public function sendRequests(array $requests, array $options = [])
+    public function sendRequests(array $requests)
     {
-        $options = $this->buildOptions($options);
+        $poolResult  = Pool::batch($this->client, $requests);
+        $batchResult = new BatchResult();
 
-        $results = Pool::batch($this->client, $requests, $options);
-
-        $exceptions = [];
-        $responses = [];
-
-        foreach ($results as $result) {
+        foreach ($poolResult as $index => $result) {
             if ($result instanceof ResponseInterface) {
-                $responses[] = $result;
-            } elseif ($result instanceof RequestException) {
-                $exceptions[] = $this->createException($result);
+                $batchResult = $batchResult->addResponse($requests[$index], $result);
+            }
+
+            if ($result instanceof RequestException) {
+                $batchResult = $batchResult->addException($requests[$index], $this->createException($result));
             }
         }
 
-        if (count($exceptions) > 0) {
-            throw new Exception\MultiHttpAdapterException($exceptions, $responses);
+        if ($batchResult->hasExceptions()) {
+            throw new BatchException($batchResult);
         }
 
-        return $results;
+        return $batchResult;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'guzzle6';
-    }
-
-    /**
-     * Converts a Guzzle exception into an HttpAdapter exception
+     * Converts a Guzzle exception into an Httplug exception
      *
      * @param RequestException $exception
      *
-     * @return Exception\HttpAdapterException
+     * @return Exception
      */
     private function createException(RequestException $exception)
     {
-        $adapterException = new Exception\HttpAdapterException(
-            $exception->getMessage(),
-            0,
-            $exception
-        );
-        $adapterException->setResponse($exception->getResponse());
-        $adapterException->setRequest($exception->getRequest());
-
-        return $adapterException;
-    }
-
-    /**
-     * Builds options for Guzzle
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    private function buildOptions(array $options)
-    {
-        $guzzleOptions = [
-            'http_errors'     => false,
-            'allow_redirects' => false,
-        ];
-
-        if (isset($options['timeout'])) {
-            $guzzleOptions['connect_timeout'] = $options['timeout'];
-            $guzzleOptions['timeout'] = $options['timeout'];
+        if ($exception->hasResponse()) {
+            return new HttpException($exception->getMessage(), $exception->getRequest(), $exception->getResponse(), $exception);
         }
 
-        return $guzzleOptions;
+        return new NetworkException($exception->getMessage(), $exception->getRequest(), $exception);
     }
 }
