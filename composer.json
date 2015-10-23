@@ -22,15 +22,8 @@
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/message-factory": "dev-master as 0.1.1",
-        "php-http/adapter-integration-tests": "dev-feature/httplug"
+        "php-http/adapter-integration-tests": "^0.2@dev"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/joelwurtz/adapter-integration-tests"
-        }
-    ],
     "provide": {
         "php-http/client-implementation": "1.0"
     },
