@@ -18,6 +18,7 @@ use GuzzleHttp\Pool;
 use Http\Client\Exception\BatchException;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
+use Http\Client\Exception;
 use Http\Client\HttpClient;
 use Http\Client\Utils\BatchResult;
 use Psr\Http\Message\RequestInterface;
@@ -34,18 +35,11 @@ class Guzzle6HttpAdapter implements HttpClient
     private $client;
 
     /**
-     * @var array Options to pass when sending one or multiple requests with guzzle
-     */
-    private $options;
-
-    /**
      * @param ClientInterface|null $client  Guzzle client
-     * @param array                $options Options to pass when sending one or multiple requests with guzzle
      */
-    public function __construct(ClientInterface $client = null, array $options = [])
+    public function __construct(ClientInterface $client = null)
     {
-        $this->client  = $client ?: new Client();
-        $this->options = $this->buildOptions($options);
+        $this->client = $client ?: new Client();
     }
 
     /**
@@ -54,7 +48,7 @@ class Guzzle6HttpAdapter implements HttpClient
     public function sendRequest(RequestInterface $request)
     {
         try {
-            return $this->client->send($request, $this->options);
+            return $this->client->send($request);
         } catch (RequestException $e) {
             throw $this->createException($e);
         }
@@ -65,7 +59,7 @@ class Guzzle6HttpAdapter implements HttpClient
      */
     public function sendRequests(array $requests)
     {
-        $poolResult  = Pool::batch($this->client, $requests, ['options' => $this->options]);
+        $poolResult  = Pool::batch($this->client, $requests);
         $batchResult = new BatchResult();
 
         foreach ($poolResult as $index => $result) {
@@ -90,7 +84,7 @@ class Guzzle6HttpAdapter implements HttpClient
      *
      * @param RequestException $exception
      *
-     * @return HttpException|NetworkException Return an HttpException if response is available, NetworkException otherwise
+     * @return Exception
      */
     private function createException(RequestException $exception)
     {
@@ -99,27 +93,5 @@ class Guzzle6HttpAdapter implements HttpClient
         }
 
         return new NetworkException($exception->getMessage(), $exception->getRequest(), $exception);
-    }
-
-    /**
-     * Builds options for Guzzle
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    private function buildOptions(array $options)
-    {
-        $guzzleOptions = [
-            'http_errors'     => false,
-            'allow_redirects' => false,
-        ];
-
-        if (isset($options['timeout'])) {
-            $guzzleOptions['connect_timeout'] = $options['timeout'];
-            $guzzleOptions['timeout'] = $options['timeout'];
-        }
-
-        return $guzzleOptions;
     }
 }
