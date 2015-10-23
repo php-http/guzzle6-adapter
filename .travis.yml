@@ -7,7 +7,6 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
@@ -20,9 +19,10 @@ env:
 matrix:
   allow_failures:
     - php: 7.0
+    - php: hhvm
   fast_finish: true
   include:
-    - php: 5.4
+    - php: 5.5
       env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
 
 before_install:
