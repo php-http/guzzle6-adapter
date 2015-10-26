@@ -55,31 +55,6 @@ class Guzzle6HttpAdapter implements HttpClient
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function sendRequests(array $requests)
-    {
-        $poolResult  = Pool::batch($this->client, $requests);
-        $batchResult = new BatchResult();
-
-        foreach ($poolResult as $index => $result) {
-            if ($result instanceof ResponseInterface) {
-                $batchResult = $batchResult->addResponse($requests[$index], $result);
-            }
-
-            if ($result instanceof RequestException) {
-                $batchResult = $batchResult->addException($requests[$index], $this->createException($result));
-            }
-        }
-
-        if ($batchResult->hasExceptions()) {
-            throw new BatchException($batchResult);
-        }
-
-        return $batchResult;
-    }
-
-    /**
      * Converts a Guzzle exception into an Httplug exception
      *
      * @param RequestException $exception
