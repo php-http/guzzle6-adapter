@@ -14,15 +14,11 @@ namespace Http\Adapter;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Pool;
-use Http\Client\Exception\BatchException;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
 use Http\Client\Exception;
 use Http\Client\HttpClient;
-use Http\Client\Utils\BatchResult;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author David de Boer <david@ddeboer.nl>
@@ -35,7 +31,7 @@ class Guzzle6HttpAdapter implements HttpClient
     private $client;
 
     /**
-     * @param ClientInterface|null $client  Guzzle client
+     * @param ClientInterface|null $client Guzzle client
      */
     public function __construct(ClientInterface $client = null)
     {
@@ -55,7 +51,7 @@ class Guzzle6HttpAdapter implements HttpClient
     }
 
     /**
-     * Converts a Guzzle exception into an Httplug exception
+     * Converts a Guzzle exception into an Httplug exception.
      *
      * @param RequestException $exception
      *
