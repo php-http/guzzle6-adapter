@@ -34,7 +34,8 @@
         }
     ],
     "provide": {
-        "php-http/client-implementation": "1.0"
+        "php-http/client-implementation": "1.0",
+        "php-http/async-client-implementation": "1.0"
     },
     "autoload": {
         "psr-4": {
