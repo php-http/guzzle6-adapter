@@ -18,13 +18,14 @@ use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
 use Http\Client\Exception\RequestException;
 use Http\Client\Exception\TransferException;
+use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * @author David de Boer <david@ddeboer.nl>
  */
-class Guzzle6HttpAdapter implements HttpClient
+class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
 {
     /**
      * @var ClientInterface
@@ -51,6 +52,14 @@ class Guzzle6HttpAdapter implements HttpClient
         } catch (GuzzleExceptions\GuzzleException $e) {
             throw $this->handleException($e);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendAsyncRequest(RequestInterface $request)
+    {
+        return new Guzzle6Promise($this->client->sendAsync($request));
     }
 
     /**
