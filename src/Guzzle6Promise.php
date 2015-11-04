@@ -28,11 +28,30 @@ class Guzzle6Promise implements Promise
     /**
      * @var Exception
      */
-    private $error;
+    private $exception;
 
     public function __construct(PromiseInterface $promise)
     {
-        $this->promise = $promise;
+        $this->promise = $promise->then(function ($response) {
+            $this->response = $response;
+            $this->state = self::FULFILLED;
+
+            return $response;
+        }, function ($reason) {
+            if (!($reason instanceof RequestException)) {
+                throw new \RuntimeException("Invalid reason");
+            }
+
+            $this->state    = self::REJECTED;
+            $this->exception = new Exception\NetworkException($reason->getMessage(), $reason->getRequest(), $reason);
+
+            if ($reason->hasResponse()) {
+                $this->exception = new Exception\HttpException($reason->getMessage(), $reason->getRequest(), $reason->getResponse(), $reason);
+            }
+
+            throw $this->exception;
+        });
+
         $this->state   = self::PENDING;
     }
 
@@ -41,31 +60,7 @@ class Guzzle6Promise implements Promise
      */
     public function then(callable $onFulfilled = null, callable $onRejected = null)
     {
-        $onFulfilledInternal = function ($response) use($onFulfilled) {
-            $this->response = $response;
-            $this->state = self::FULFILLED;
-
-            return $onFulfilled($this->response);
-        };
-
-        $onRejectedInternal = function ($reason) use($onRejected) {
-            if (!($reason instanceof RequestException)) {
-                 throw new \RuntimeException("Invalid reason");
-            }
-
-            $this->state = self::REJECTED;
-            $this->error = new Exception\NetworkException($reason->getMessage(), $reason->getRequest(), $reason);
-
-            if ($reason->hasResponse()) {
-                $this->error = new Exception\HttpException($reason->getMessage(), $reason->getRequest(), $reason->getResponse(), $reason);
-            }
-
-            return $onRejected($this->error);
-        };
-
-        $this->promise = $this->promise->then($onFulfilledInternal, $onRejectedInternal);
-
-        return new static($this->promise);
+        return new static($this->promise->then($onFulfilled, $onRejected));
     }
 
     /**
@@ -92,13 +87,13 @@ class Guzzle6Promise implements Promise
     /**
      * {@inheritdoc}
      */
-    public function getError()
+    public function getException()
     {
         if (self::REJECTED !== $this->state) {
             throw new \LogicException("Error not available for the current state");
         }
 
-        return $this->error;
+        return $this->exception;
     }
 
     /**
