@@ -112,7 +112,7 @@ class Guzzle6Promise implements Promise
      * @param GuzzleExceptions\GuzzleException $exception
      * @param RequestInterface                 $request
      *
-     * @return Exception
+     * @return HttplugException
      */
     private function handleException(GuzzleExceptions\GuzzleException $exception, RequestInterface $request)
     {
