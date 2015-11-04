@@ -8,15 +8,16 @@
  * For the full copyright and license information, please read the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Http\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception as GuzzleExceptions;
+use Http\Client\Exception;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
-use Http\Client\Exception;
+use Http\Client\Exception\RequestException;
+use Http\Client\Exception\TransferException;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 
@@ -45,24 +46,40 @@ class Guzzle6HttpAdapter implements HttpClient
     {
         try {
             return $this->client->send($request);
-        } catch (RequestException $e) {
-            throw $this->createException($e);
+        } catch (GuzzleExceptions\SeekException $e) {
+            throw new RequestException($e->getMessage(), $request, $e);
+        } catch (GuzzleExceptions\GuzzleException $e) {
+            throw $this->handleException($e);
         }
     }
 
     /**
      * Converts a Guzzle exception into an Httplug exception.
      *
-     * @param RequestException $exception
+     * @param GuzzleExceptions\GuzzleException $exception
      *
      * @return Exception
      */
-    private function createException(RequestException $exception)
+    private function handleException(GuzzleExceptions\GuzzleException $exception)
     {
-        if ($exception->hasResponse()) {
-            return new HttpException($exception->getMessage(), $exception->getRequest(), $exception->getResponse(), $exception);
+        if ($exception instanceof GuzzleExceptions\ConnectException) {
+            return new NetworkException($exception->getMessage(), $exception->getRequest(), $exception);
         }
 
-        return new NetworkException($exception->getMessage(), $exception->getRequest(), $exception);
+        if ($exception instanceof GuzzleExceptions\RequestException) {
+            // Make sure we have a response for the HttpException
+            if ($exception->hasResponse()) {
+                return new HttpException(
+                    $exception->getMessage(),
+                    $exception->getRequest(),
+                    $exception->getResponse(),
+                    $exception
+                );
+            }
+
+            return new RequestException($exception->getMessage(), $exception->getRequest(), $exception);
+        }
+
+        return new TransferException($exception->getMessage(), 0, $exception);
     }
 }
