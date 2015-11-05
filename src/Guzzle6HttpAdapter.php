@@ -13,18 +13,17 @@ namespace Http\Adapter;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception as GuzzleExceptions;
+use GuzzleHttp\Promise\PromiseInterface;
 use Http\Client\Exception;
-use Http\Client\Exception\HttpException;
-use Http\Client\Exception\NetworkException;
 use Http\Client\Exception\RequestException;
-use Http\Client\Exception\TransferException;
+use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * @author David de Boer <david@ddeboer.nl>
  */
-class Guzzle6HttpAdapter implements HttpClient
+class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
 {
     /**
      * @var ClientInterface
@@ -44,42 +43,21 @@ class Guzzle6HttpAdapter implements HttpClient
      */
     public function sendRequest(RequestInterface $request)
     {
-        try {
-            return $this->client->send($request);
-        } catch (GuzzleExceptions\SeekException $e) {
-            throw new RequestException($e->getMessage(), $request, $e);
-        } catch (GuzzleExceptions\GuzzleException $e) {
-            throw $this->handleException($e);
+        $promise = $this->sendAsyncRequest($request);
+        $promise->wait();
+
+        if ($promise->getState() == PromiseInterface::REJECTED) {
+            throw $promise->getException();
         }
+
+        return $promise->getResponse();
     }
 
     /**
-     * Converts a Guzzle exception into an Httplug exception.
-     *
-     * @param GuzzleExceptions\GuzzleException $exception
-     *
-     * @return Exception
+     * {@inheritdoc}
      */
-    private function handleException(GuzzleExceptions\GuzzleException $exception)
+    public function sendAsyncRequest(RequestInterface $request)
     {
-        if ($exception instanceof GuzzleExceptions\ConnectException) {
-            return new NetworkException($exception->getMessage(), $exception->getRequest(), $exception);
-        }
-
-        if ($exception instanceof GuzzleExceptions\RequestException) {
-            // Make sure we have a response for the HttpException
-            if ($exception->hasResponse()) {
-                return new HttpException(
-                    $exception->getMessage(),
-                    $exception->getRequest(),
-                    $exception->getResponse(),
-                    $exception
-                );
-            }
-
-            return new RequestException($exception->getMessage(), $exception->getRequest(), $exception);
-        }
-
-        return new TransferException($exception->getMessage(), 0, $exception);
+        return new Guzzle6Promise($this->client->sendAsync($request), $request);
     }
 }
