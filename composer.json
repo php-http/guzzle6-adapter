@@ -22,14 +22,8 @@
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/adapter-integration-tests": "dev-feature/async-test"
+        "php-http/adapter-integration-tests": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/joelwurtz/adapter-integration-tests"
-        }
-    ],
     "provide": {
         "php-http/client-implementation": "1.0",
         "php-http/async-client-implementation": "1.0"
