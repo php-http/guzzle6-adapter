@@ -16,7 +16,8 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "php-http/httplug": "dev-feature/async as 1.0.1",
+        "php-http/httplug": "dev-master",
+        "php-http/httplug-async": "^0.1",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
@@ -24,10 +25,6 @@
         "php-http/adapter-integration-tests": "dev-feature/async-test"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/joelwurtz/httplug"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/joelwurtz/adapter-integration-tests"
