@@ -12,12 +12,9 @@ namespace Http\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception as GuzzleExceptions;
-use GuzzleHttp\Promise\PromiseInterface;
-use Http\Client\Exception;
-use Http\Client\Exception\RequestException;
 use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
+use Http\Client\Promise;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -46,7 +43,7 @@ class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
         $promise = $this->sendAsyncRequest($request);
         $promise->wait();
 
-        if ($promise->getState() == PromiseInterface::REJECTED) {
+        if ($promise->getState() == Promise::REJECTED) {
             throw $promise->getException();
         }
 
