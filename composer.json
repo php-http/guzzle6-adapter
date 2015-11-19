@@ -3,7 +3,7 @@
     "description": "Guzzle 6 HTTP Adapter",
     "license": "MIT",
     "keywords": ["guzzle", "http"],
-    "homepage": "http://php-http.org",
+    "homepage": "http://httplug.io",
     "authors": [
         {
             "name": "David de Boer",
@@ -17,6 +17,7 @@
     "require": {
         "php": ">=5.5.0",
         "php-http/httplug": "^1.0@dev",
+        "php-http/client-tools": "^0.1@dev",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {

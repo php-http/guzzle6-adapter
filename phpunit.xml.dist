@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Guzzle 6 Adapter Test Suite">
+        <testsuite name="Guzzle 6 HTTP Adapter Test Suite">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>

@@ -9,10 +9,15 @@ use Http\Client\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Wrapper around Guzzle promises.
+ *
+ * @author Joel Wurtz <joel.wurtz@gmail.com>
+ */
 class Guzzle6Promise implements Promise
 {
     /**
-     * @var \GuzzleHttp\Promise\PromiseInterface
+     * @var PromiseInterface
      */
     private $promise;
 
@@ -36,6 +41,10 @@ class Guzzle6Promise implements Promise
      */
     private $request;
 
+    /**
+     * @param PromiseInterface $promise
+     * @param RequestInterface $request
+     */
     public function __construct(PromiseInterface $promise, RequestInterface $request)
     {
         $this->request = $request;
@@ -148,4 +157,3 @@ class Guzzle6Promise implements Promise
         return new HttplugException\TransferException($exception->getMessage(), 0, $exception);
     }
 }
- 
