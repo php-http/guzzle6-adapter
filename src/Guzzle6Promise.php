@@ -63,7 +63,7 @@ class Guzzle6Promise implements Promise
             }
 
             if (!($reason instanceof GuzzleExceptions\GuzzleException)) {
-                throw new \RuntimeException('Invalid reason');
+                throw new \RuntimeException('Invalid exception returned from Guzzle6', $reason);
             }
 
             $this->state = self::REJECTED;
