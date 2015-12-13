@@ -5,7 +5,7 @@ namespace Http\Adapter;
 use GuzzleHttp\Exception as GuzzleExceptions;
 use GuzzleHttp\Promise\PromiseInterface;
 use Http\Client\Exception as HttplugException;
-use Http\Client\Promise;
+use Http\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -89,37 +89,20 @@ class Guzzle6Promise implements Promise
         return $this->state;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function getResponse()
-    {
-        if (self::FULFILLED !== $this->state) {
-            throw new \LogicException("Response not available for the current state");
-        }
-
-        return $this->response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getException()
-    {
-        if (self::REJECTED !== $this->state) {
-            throw new \LogicException("Error not available for the current state");
-        }
-
-        return $this->exception;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function wait()
+    public function wait($unwrap = true)
     {
         $this->promise->wait(false);
+
+        if ($unwrap) {
+            if ($this->getState() == self::REJECTED) {
+                throw $this->exception;
+            }
+
+            return $this->response;
+        }
     }
 
     /**
