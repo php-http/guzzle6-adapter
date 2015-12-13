@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "php-http/httplug": "^1.0@dev",
+        "php-http/httplug": "1.0.0-alpha3",
         "php-http/client-tools": "^0.1@dev",
         "guzzlehttp/guzzle": "^6.0"
     },
