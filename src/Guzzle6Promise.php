@@ -48,7 +48,7 @@ class Guzzle6Promise implements Promise
     public function __construct(PromiseInterface $promise, RequestInterface $request)
     {
         $this->request = $request;
-        $this->state   = self::PENDING;
+        $this->state = self::PENDING;
         $this->promise = $promise->then(function ($response) {
             $this->response = $response;
             $this->state = self::FULFILLED;
@@ -56,17 +56,17 @@ class Guzzle6Promise implements Promise
             return $response;
         }, function ($reason) use ($request) {
             if ($reason instanceof HttplugException) {
-                $this->state     = self::REJECTED;
+                $this->state = self::REJECTED;
                 $this->exception = $reason;
 
                 throw $this->exception;
             }
 
             if (!($reason instanceof GuzzleExceptions\GuzzleException)) {
-                throw new \RuntimeException("Invalid reason");
+                throw new \RuntimeException('Invalid reason');
             }
 
-            $this->state     = self::REJECTED;
+            $this->state = self::REJECTED;
             $this->exception = $this->handleException($reason, $request);
 
             throw $this->exception;
