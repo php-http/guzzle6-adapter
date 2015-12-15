@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
-use Http\Client\Promise;
 use Http\Client\Tools\HttpClientEmulator;
 use Psr\Http\Message\RequestInterface;
 
