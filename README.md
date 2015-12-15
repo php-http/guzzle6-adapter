@@ -21,7 +21,7 @@ $ composer require php-http/guzzle6-adapter
 
 ## Documentation
 
-Please see the [official documentation](http://php-http.readthedocs.org/en/latest/).
+Please see the [official documentation](http://docs.httplug.io).
 
 
 ## Testing
@@ -40,6 +40,11 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 If you discover any security related issues, please contact us at [security@httplug.io](mailto:security@httplug.io)
 or [security@php-http.org](mailto:security@php-http.org).
+
+
+## Credits
+
+Thanks to [David de Boer](https://github.com/ddeboer) for implementing this adapter.
 
 
 ## License
