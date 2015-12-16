@@ -4,6 +4,8 @@ namespace Http\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
 use Http\Client\Tools\HttpClientEmulator;
@@ -28,7 +30,12 @@ class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
      */
     public function __construct(ClientInterface $client = null)
     {
-        $this->client = $client ?: new Client();
+        if (!$client) {
+            $handlerStack = new HandlerStack();
+            $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
+            $client = new Client(['handler' => $handlerStack]);
+        }
+        $this->client = $client;
     }
 
     /**
