@@ -1,10 +1,15 @@
 # Change Log
 
-### Unreleased
+### 0.2.1 - 2015-12-17
+
+### Added
+
+- Puli configuration and bindings
 
 ### Changed
 
 - Guzzle setup conforms to HTTPlug requirement now: Minimal functionality in client
+
 
 ## 0.2.0 - 2015-12-15
 
