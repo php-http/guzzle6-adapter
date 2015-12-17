@@ -1,5 +1,10 @@
 # Change Log
 
+### Unreleased
+
+### Changed
+
+- Guzzle setup conforms to HTTPlug requirement now: Minimal functionality in client
 
 ## 0.2.0 - 2015-12-15
 
