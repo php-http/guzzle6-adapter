@@ -31,7 +31,7 @@ class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
     public function __construct(ClientInterface $client = null)
     {
         if (!$client) {
-            $handlerStack = new HandlerStack();
+            $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
             $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
             $client = new Client(['handler' => $handlerStack]);
         }
