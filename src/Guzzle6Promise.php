@@ -62,9 +62,9 @@ class Guzzle6Promise implements Promise
             } elseif ($reason instanceof GuzzleExceptions\GuzzleException) {
                 $this->exception = $this->handleException($reason, $request);
             } elseif ($reason instanceof \Exception) {
-                throw new \RuntimeException('Invalid exception returned from Guzzle6', 0, $reason);
+                $this->exception = new \RuntimeException('Invalid exception returned from Guzzle6', 0, $reason);
             } else {
-                throw new \UnexpectedValueException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
+                $this->exception = new \UnexpectedValueException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
             }
 
             throw $this->exception;
