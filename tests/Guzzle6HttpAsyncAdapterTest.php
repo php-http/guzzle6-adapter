@@ -7,7 +7,7 @@ use Http\Adapter\Guzzle6HttpAdapter;
 use Http\Client\Tests\HttpAsyncClientTest;
 
 /**
- * @author GeLo <geloen.eric@gmail.com>
+ * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
 abstract class Guzzle6HttpAsyncAdapterTest extends HttpAsyncClientTest
 {

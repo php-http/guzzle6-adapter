@@ -5,7 +5,7 @@ namespace Http\Adapter\Tests;
 use GuzzleHttp\Handler\StreamHandler;
 
 /**
- * @author GeLo <geloen.eric@gmail.com>
+ * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
 class Guzzle6StreamHttpAsyncAdapterTest extends Guzzle6HttpAsyncAdapterTest
 {

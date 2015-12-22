@@ -5,7 +5,7 @@ namespace Http\Adapter\Tests;
 use GuzzleHttp\Handler\CurlMultiHandler;
 
 /**
- * @author GeLo <geloen.eric@gmail.com>
+ * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
 class Guzzle6MultiCurlHttpAsyncAdapterTest extends Guzzle6HttpAsyncAdapterTest
 {

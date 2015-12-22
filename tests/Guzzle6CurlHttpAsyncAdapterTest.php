@@ -7,7 +7,7 @@ use GuzzleHttp\Handler\CurlHandler;
 /**
  * @requires PHP 5.5
  *
- * @author GeLo <geloen.eric@gmail.com>
+ * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
 class Guzzle6CurlHttpAsyncAdapterTest extends Guzzle6HttpAsyncAdapterTest
 {
