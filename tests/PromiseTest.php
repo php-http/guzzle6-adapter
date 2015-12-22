@@ -13,8 +13,9 @@ class PromiseTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \Exception
+     * @test
      */
-    public function testNonDomainExceptionIsHandled()
+    public function it_handles_non_domain_exception()
     {
         $request = $this->prophesize('Psr\Http\Message\RequestInterface');
         $promise = new RejectedPromise(new \Exception());

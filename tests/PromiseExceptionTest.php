@@ -10,7 +10,10 @@ use Http\Adapter\Guzzle6\Promise;
  */
 class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetException()
+    /**
+     * @test
+     */
+    public function it_converts_guzzle_exceptions_to_domain_exceptions()
     {
         $request = $this->getMock('Psr\Http\Message\RequestInterface');
         $response = $this->getMock('Psr\Http\Message\ResponseInterface');
