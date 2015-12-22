@@ -55,11 +55,11 @@ class Guzzle6Promise implements Promise
 
             return $response;
         }, function ($reason) use ($request) {
+            $this->state = self::REJECTED;
+
             if ($reason instanceof HttplugException) {
-                $this->state = self::REJECTED;
                 $this->exception = $reason;
             } elseif ($reason instanceof GuzzleExceptions\GuzzleException) {
-                $this->state = self::REJECTED;
                 $this->exception = $this->handleException($reason, $request);
             } elseif ($reason instanceof \Exception) {
                 throw new \RuntimeException('Invalid exception returned from Guzzle6', 0, $reason);
