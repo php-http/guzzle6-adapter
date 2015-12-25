@@ -8,7 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
-use Http\Client\Tools\HttpClientEmulator;
+use Http\Client\Common\HttpClientEmulator;
 use Psr\Http\Message\RequestInterface;
 
 /**
