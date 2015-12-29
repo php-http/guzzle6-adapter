@@ -1,22 +1,22 @@
 <?php
 
-namespace Http\Adapter\Tests;
+namespace Http\Adapter\Guzzle6\Tests;
 
-use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6HttpAdapter;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client;
 use Http\Client\Tests\HttpClientTest;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class Guzzle6HttpAdapterTest extends HttpClientTest
+abstract class HttpAdapterTest extends HttpClientTest
 {
     /**
      * {@inheritdoc}
      */
     protected function createHttpAdapter()
     {
-        return new Guzzle6HttpAdapter(new Client(['handler' => $this->createHandler()]));
+        return new Client(new GuzzleClient(['handler' => $this->createHandler()]));
     }
 
     /**

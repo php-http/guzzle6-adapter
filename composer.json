@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Http\\Adapter\\": "src/"
+            "Http\\Adapter\\Guzzle6\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Http\\Adapter\\Tests\\": "tests/"
+            "Http\\Adapter\\Guzzle6\\Tests\\": "tests/"
         }
     },
     "scripts": {

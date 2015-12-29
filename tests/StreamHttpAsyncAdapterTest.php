@@ -1,13 +1,13 @@
 <?php
 
-namespace Http\Adapter\Tests;
+namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Handler\StreamHandler;
 
 /**
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-class Guzzle6StreamHttpAsyncAdapterTest extends Guzzle6HttpAsyncAdapterTest
+class StreamHttpAsyncAdapterTest extends HttpAsyncAdapterTest
 {
     /**
      * {@inheritdoc}

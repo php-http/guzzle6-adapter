@@ -1,11 +1,11 @@
 <?php
 
-namespace Http\Adapter;
+namespace Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use GuzzleHttp\Promise\PromiseInterface;
 use Http\Client\Exception as HttplugException;
-use Http\Promise\Promise;
+use Http\Promise\Promise as HttpPromise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-class Guzzle6Promise implements Promise
+class Promise implements HttpPromise
 {
     /**
      * @var PromiseInterface
