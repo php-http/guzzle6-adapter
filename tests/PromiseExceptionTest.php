@@ -1,14 +1,14 @@
 <?php
 
-namespace Http\Adapter\Tests;
+namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
-use Http\Adapter\Guzzle6Promise;
+use Http\Adapter\Guzzle6\Promise;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class Guzzle6PromiseExceptionTest extends \PHPUnit_Framework_TestCase
+class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetException()
     {
@@ -16,8 +16,8 @@ class Guzzle6PromiseExceptionTest extends \PHPUnit_Framework_TestCase
         $response = $this->getMock('Psr\Http\Message\ResponseInterface');
         $promise = $this->getMock('GuzzleHttp\Promise\PromiseInterface');
 
-        $adapter = new Guzzle6Promise($promise, $request);
-        $method  = new \ReflectionMethod('Http\Adapter\Guzzle6Promise', 'handleException');
+        $adapter = new Promise($promise, $request);
+        $method  = new \ReflectionMethod('Http\Adapter\Guzzle6\Promise', 'handleException');
         $method->setAccessible(true);
 
         $outputException = $method->invoke($adapter, new GuzzleExceptions\ConnectException('foo', $request), $request);

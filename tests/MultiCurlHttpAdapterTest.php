@@ -1,13 +1,13 @@
 <?php
 
-namespace Http\Adapter\Tests;
+namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Handler\CurlMultiHandler;
 
 /**
- * @author Joel Wurtz <joel.wurtz@gmail.com>
+ * @author GeLo <geloen.eric@gmail.com>
  */
-class Guzzle6MultiCurlHttpAsyncAdapterTest extends Guzzle6HttpAsyncAdapterTest
+class MultiCurlHttpAdapterTest extends HttpAdapterTest
 {
     /**
      * {@inheritdoc}

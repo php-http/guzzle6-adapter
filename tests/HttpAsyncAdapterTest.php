@@ -1,22 +1,22 @@
 <?php
 
-namespace Http\Adapter\Tests;
+namespace Http\Adapter\Guzzle6\Tests;
 
-use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6HttpAdapter;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client;
 use Http\Client\Tests\HttpAsyncClientTest;
 
 /**
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-abstract class Guzzle6HttpAsyncAdapterTest extends HttpAsyncClientTest
+abstract class HttpAsyncAdapterTest extends HttpAsyncClientTest
 {
     /**
      * {@inheritdoc}
      */
     protected function createHttpAsyncClient()
     {
-        return new Guzzle6HttpAdapter(new Client(['handler' => $this->createHandler()]));
+        return new Client(new GuzzleClient(['handler' => $this->createHandler()]));
     }
 
     /**

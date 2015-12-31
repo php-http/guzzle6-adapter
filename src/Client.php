@@ -1,8 +1,8 @@
 <?php
 
-namespace Http\Adapter;
+namespace Http\Adapter\Guzzle6;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -16,7 +16,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
+class Client implements HttpClient, HttpAsyncClient
 {
     use HttpClientEmulator;
 
@@ -33,7 +33,7 @@ class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
         if (!$client) {
             $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
             $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
-            $client = new Client(['handler' => $handlerStack]);
+            $client = new GuzzleClient(['handler' => $handlerStack]);
         }
         $this->client = $client;
     }
@@ -45,6 +45,6 @@ class Guzzle6HttpAdapter implements HttpClient, HttpAsyncClient
     {
         $promise = $this->client->sendAsync($request);
 
-        return new Guzzle6Promise($promise, $request);
+        return new Promise($promise, $request);
     }
 }
