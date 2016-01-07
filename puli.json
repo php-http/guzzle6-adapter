@@ -1,5 +1,6 @@
 {
     "version": "1.0",
+    "name": "php-http/guzzle6-adapter",
     "bindings": {
         "04b5a002-71a8-473d-a8df-75671551b84a": {
             "_class": "Puli\\Discovery\\Binding\\ClassBinding",
