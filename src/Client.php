@@ -32,6 +32,7 @@ class Client implements HttpClient, HttpAsyncClient
             $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
             $client = new GuzzleClient(['handler' => $handlerStack]);
         }
+
         $this->client = $client;
     }
 
