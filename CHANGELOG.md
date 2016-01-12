@@ -1,7 +1,14 @@
 # Change Log
 
 
-### 0.4.0 - 2016-01-12
+### UNRELEASED
+
+### Removed
+
+- Client common dependency
+
+
+## 0.4.0 - 2016-01-12
 
 ### Changed
 
@@ -9,7 +16,7 @@
 - Updated HTTPlug to RC1
 
 
-### 0.2.1 - 2015-12-17
+## 0.2.1 - 2015-12-17
 
 ### Added
 
