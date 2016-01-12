@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "php-http/httplug": "1.0.0-beta",
-        "php-http/client-common": "^0.1.1",
+        "php-http/httplug": "^1.0",
+        "php-http/client-common": "^0.2",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
@@ -44,9 +44,9 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3-dev"
+            "dev-master": "0.4-dev"
         }
     },
     "prefer-stable": true,
-    "minimum-stability": "dev"
+    "minimum-stability": "RC"
 }
