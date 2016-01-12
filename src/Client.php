@@ -18,8 +18,6 @@ use Psr\Http\Message\RequestInterface;
  */
 class Client implements HttpClient, HttpAsyncClient
 {
-    use HttpClientEmulator;
-
     /**
      * @var ClientInterface
      */
@@ -36,6 +34,16 @@ class Client implements HttpClient, HttpAsyncClient
             $client = new GuzzleClient(['handler' => $handlerStack]);
         }
         $this->client = $client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendRequest(RequestInterface $request)
+    {
+        $promise = $this->sendAsyncRequest($request);
+
+        return $promise->wait();
     }
 
     /**
