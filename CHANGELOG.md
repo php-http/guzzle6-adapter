@@ -1,7 +1,11 @@
 # Change Log
 
 
-### UNRELEASED
+## 0.4.1 - 2016-01-13
+
+### Changed
+
+- Updated integration tests
 
 ### Removed
 
