@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/adapter-integration-tests": "^0.2"
+        "php-http/adapter-integration-tests": "^0.3"
     },
     "provide": {
         "php-http/client-implementation": "1.0",
@@ -43,9 +43,9 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5-dev"
+            "dev-master": "1.1-dev"
         }
     },
     "prefer-stable": true,
-    "minimum-stability": "dev"
+    "minimum-stability": "beta"
 }
