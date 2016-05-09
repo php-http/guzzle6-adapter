@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.0 (unreleased)
+
+### Added
+
+- Factory method Client::createWithConfig to create an adapter with custom
+  configuration for the underlying guzzle client.
 
 ## 1.0.0 - 2016-01-26
 

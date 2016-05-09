@@ -28,12 +28,22 @@ class Client implements HttpClient, HttpAsyncClient
     public function __construct(ClientInterface $client = null)
     {
         if (!$client) {
-            $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
-            $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
-            $client = new GuzzleClient(['handler' => $handlerStack]);
+            $client = static::buildClient();
         }
 
         $this->client = $client;
+    }
+
+    /**
+     * Factory method to create the guzzle 6 adapter with custom configuration for guzzle.
+     *
+     * @param array $config Configuration to create guzzle with.
+     *
+     * @return Client
+     */
+    public static function createWithConfig(array $config)
+    {
+        return new self(static::buildClient($config));
     }
 
     /**
@@ -54,5 +64,21 @@ class Client implements HttpClient, HttpAsyncClient
         $promise = $this->client->sendAsync($request);
 
         return new Promise($promise, $request);
+    }
+
+    /**
+     * Build the guzzle client instance.
+     *
+     * @param array $config Additional configuration
+     *
+     * @return GuzzleClient
+     */
+    private static function buildClient(array $config)
+    {
+        $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
+        $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
+        $config = array_merge(['handler' => $handlerStack], $config);
+
+        return new GuzzleClient($config);
     }
 }
