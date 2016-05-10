@@ -1,6 +1,12 @@
 # Change Log
 
 
+## 1.1.1 - 2016-05-10
+
+### Fixed
+
+- Adapter can again be instantiated without a guzzle client.
+
 ## 1.1.0 - 2016-05-09
 
 ### Added
