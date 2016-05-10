@@ -73,7 +73,7 @@ class Client implements HttpClient, HttpAsyncClient
      *
      * @return GuzzleClient
      */
-    private static function buildClient(array $config)
+    private static function buildClient(array $config = array())
     {
         $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
         $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
