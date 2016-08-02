@@ -20,7 +20,7 @@ abstract class HttpAsyncAdapterTest extends HttpAsyncClientTest
     }
 
     /**
-     * Returns a handler for the client
+     * Returns a handler for the client.
      *
      * @return object
      */

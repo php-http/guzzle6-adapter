@@ -2,7 +2,6 @@
 
 namespace Http\Adapter\Guzzle6\Tests;
 
-use GuzzleHttp\Exception as GuzzleExceptions;
 use GuzzleHttp\Promise\RejectedPromise;
 use Http\Adapter\Guzzle6\Promise;
 

@@ -17,7 +17,7 @@ class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
         $promise = $this->getMock('GuzzleHttp\Promise\PromiseInterface');
 
         $adapter = new Promise($promise, $request);
-        $method  = new \ReflectionMethod('Http\Adapter\Guzzle6\Promise', 'handleException');
+        $method = new \ReflectionMethod('Http\Adapter\Guzzle6\Promise', 'handleException');
         $method->setAccessible(true);
 
         $outputException = $method->invoke($adapter, new GuzzleExceptions\ConnectException('foo', $request), $request);
