@@ -4,7 +4,7 @@ sudo: false
 
 cache:
     directories:
-        - $HOME/.composer/cache
+        - $HOME/.composer/cache/files
 
 php:
     - 5.5
@@ -30,10 +30,12 @@ matrix:
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
 
 before_install:
-    - travis_retry composer self-update
+    - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
 
 install:
-    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
+    # To be removed when this issue will be resolved: https://github.com/composer/composer/issues/5355
+    - if [[ "$COMPOSER_FLAGS" == *"--prefer-lowest"* ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --quiet; fi
+    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist --no-interaction
 
 before_script:
     - vendor/bin/http_test_server > /dev/null 2>&1 &
@@ -42,5 +44,5 @@ script:
     - $TEST_COMMAND
 
 after_success:
-    - if [[ "$COVERAGE" = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-    - if [[ "$COVERAGE" = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi
+    - if [[ $COVERAGE = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+    - if [[ $COVERAGE = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi
