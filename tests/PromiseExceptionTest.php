@@ -12,9 +12,9 @@ class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetException()
     {
-        $request = $this->getMock('Psr\Http\Message\RequestInterface');
-        $response = $this->getMock('Psr\Http\Message\ResponseInterface');
-        $promise = $this->getMock('GuzzleHttp\Promise\PromiseInterface');
+        $request = $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock();
+        $response = $this->getMockBuilder('Psr\Http\Message\ResponseInterface')->getMock();
+        $promise = $this->getMockBuilder('GuzzleHttp\Promise\PromiseInterface')->getMock();
 
         $adapter = new Promise($promise, $request);
         $method = new \ReflectionMethod('Http\Adapter\Guzzle6\Promise', 'handleException');
