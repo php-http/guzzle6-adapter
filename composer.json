@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Http\\Adapter\\Guzzle6\\Tests\\": "tests/"
+            "Tests\\Http\\Adapter\\Guzzle6\\": "tests/"
         }
     },
     "scripts": {

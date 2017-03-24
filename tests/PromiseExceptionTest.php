@@ -1,6 +1,6 @@
 <?php
 
-namespace Http\Adapter\Guzzle6\Tests;
+namespace Tests\Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use Http\Adapter\Guzzle6\Promise;
@@ -10,7 +10,10 @@ use Http\Adapter\Guzzle6\Promise;
  */
 class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetException()
+    /**
+     * @test
+     */
+    public function it_converts_guzzle_exceptions_to_domain_exceptions()
     {
         $request = $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock();
         $response = $this->getMockBuilder('Psr\Http\Message\ResponseInterface')->getMock();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Http\Adapter\Guzzle6\Tests;
+namespace Tests\Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Handler\StreamHandler;
 
