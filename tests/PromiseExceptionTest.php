@@ -4,11 +4,12 @@ namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use Http\Adapter\Guzzle6\Promise;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class PromiseExceptionTest extends \PHPUnit_Framework_TestCase
+class PromiseExceptionTest extends TestCase
 {
     public function testGetException()
     {

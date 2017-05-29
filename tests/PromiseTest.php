@@ -4,11 +4,12 @@ namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Promise\RejectedPromise;
 use Http\Adapter\Guzzle6\Promise;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class PromiseTest extends \PHPUnit_Framework_TestCase
+class PromiseTest extends TestCase
 {
     /**
      * @expectedException \Exception
