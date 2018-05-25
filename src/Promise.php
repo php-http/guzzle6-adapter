@@ -95,11 +95,11 @@ class Promise implements HttpPromise
         $this->promise->wait(false);
 
         if ($unwrap) {
-            if ($this->getState() == self::REJECTED) {
-                throw $this->exception;
+            if (self::REJECTED == $this->getState()) {
+                return \GuzzleHttp\Promise\rejection_for($this->exception);
             }
 
-            return $this->response;
+            return \GuzzleHttp\Promise\promise_for($this->response);
         }
     }
 

@@ -51,7 +51,7 @@ class Client implements HttpClient, HttpAsyncClient
      */
     public function sendRequest(RequestInterface $request)
     {
-        $promise = $this->sendAsyncRequest($request);
+        $promise = $this->sendAsyncRequest($request)->wait();
 
         return $promise->wait();
     }
