@@ -4,6 +4,8 @@ namespace Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use GuzzleHttp\Promise\PromiseInterface;
+use function GuzzleHttp\Promise\promise_for;
+use function GuzzleHttp\Promise\rejection_for;
 use Http\Client\Exception as HttplugException;
 use Http\Promise\Promise as HttpPromise;
 use Psr\Http\Message\RequestInterface;
@@ -96,10 +98,10 @@ class Promise implements HttpPromise
 
         if ($unwrap) {
             if ($this->getState() == self::REJECTED) {
-                throw $this->exception;
+                return rejection_for($this->exception);
             }
 
-            return $this->response;
+            return promise_for($this->response);
         }
     }
 
