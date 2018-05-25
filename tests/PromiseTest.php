@@ -21,6 +21,6 @@ class PromiseTest extends TestCase
 
         $guzzlePromise = new Promise($promise, $request->reveal());
 
-        $guzzlePromise->wait();
+        $guzzlePromise->wait()->wait();
     }
 }
