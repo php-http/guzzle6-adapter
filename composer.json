@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "php-http/httplug": "^1.0",
+        "php-http/httplug": "^2.0@dev",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
