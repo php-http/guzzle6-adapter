@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "ext-curl": "*",
-        "php-http/client-integration-tests": "^0.6"
+        "php-http/client-integration-tests": "dev-master"
     },
     "provide": {
         "php-http/client-implementation": "1.0",
