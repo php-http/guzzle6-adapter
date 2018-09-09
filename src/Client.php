@@ -28,7 +28,7 @@ final class Client implements HttpClient, HttpAsyncClient
     public function __construct(ClientInterface $client = null)
     {
         if (!$client) {
-            $client = static::buildClient();
+            $client = self::buildClient();
         }
 
         $this->client = $client;
@@ -43,7 +43,7 @@ final class Client implements HttpClient, HttpAsyncClient
      */
     public static function createWithConfig(array $config)
     {
-        return new self(static::buildClient($config));
+        return new self(self::buildClient($config));
     }
 
     /**
