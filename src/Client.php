@@ -15,7 +15,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-class Client implements HttpClient, HttpAsyncClient
+final class Client implements HttpClient, HttpAsyncClient
 {
     /**
      * @var ClientInterface
