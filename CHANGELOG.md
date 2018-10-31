@@ -4,13 +4,13 @@
 
 ### Added
 
-- Support from HTTPlug 2.0 and PSR-18
+- Support for HTTPlug 2.0 and PSR-18
 
 ### Changed
 
 - `Client` and `Promise` are both final. 
 
-## Removed
+### Removed
 
 - Support for PHP <7.1
 
