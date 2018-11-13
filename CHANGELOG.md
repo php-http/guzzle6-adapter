@@ -1,5 +1,18 @@
 # Change Log
 
+## 2.0.0
+
+### Added
+
+- Support for HTTPlug 2.0 and PSR-18
+
+### Changed
+
+- `Client` and `Promise` are both final. 
+
+### Removed
+
+- Support for PHP <7.1
 
 ## 1.1.1 - 2016-05-10
 
