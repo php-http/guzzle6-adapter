@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -23,7 +25,7 @@ final class Client implements HttpClient, HttpAsyncClient
      */
     private $client;
 
-    public function __construct(ClientInterface $client = null)
+    public function __construct(?ClientInterface $client = null)
     {
         if (!$client) {
             $client = self::buildClient();
