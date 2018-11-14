@@ -23,9 +23,6 @@ final class Client implements HttpClient, HttpAsyncClient
      */
     private $client;
 
-    /**
-     * @param ClientInterface|null $client
-     */
     public function __construct(ClientInterface $client = null)
     {
         if (!$client) {
@@ -36,13 +33,9 @@ final class Client implements HttpClient, HttpAsyncClient
     }
 
     /**
-     * Factory method to create the guzzle 6 adapter with custom configuration for guzzle.
-     *
-     * @param array $config Configuration to create guzzle with.
-     *
-     * @return Client
+     * Factory method to create the Guzzle 6 adapter with custom Guzzle configuration.
      */
-    public static function createWithConfig(array $config)
+    public static function createWithConfig(array $config): Client
     {
         return new self(self::buildClient($config));
     }
@@ -68,13 +61,9 @@ final class Client implements HttpClient, HttpAsyncClient
     }
 
     /**
-     * Build the guzzle client instance.
-     *
-     * @param array $config Additional configuration
-     *
-     * @return GuzzleClient
+     * Build the Guzzle client instance.
      */
-    private static function buildClient(array $config = [])
+    private static function buildClient(array $config = []): GuzzleClient
     {
         $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
         $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
