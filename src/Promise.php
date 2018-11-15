@@ -62,9 +62,9 @@ final class Promise implements HttpPromise
             } elseif ($reason instanceof GuzzleExceptions\GuzzleException) {
                 $this->exception = $this->handleException($reason, $request);
             } elseif ($reason instanceof \Exception) {
-                $this->exception = new \RuntimeException('Invalid exception returned from Guzzle6', 0, $reason);
+                $this->exception = new HttplugException\TransferException('Invalid exception returned from Guzzle6', 0, $reason);
             } else {
-                $this->exception = new \UnexpectedValueException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
+                $this->exception = new HttplugException\TransferException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
             }
 
             throw $this->exception;
