@@ -4,6 +4,7 @@ namespace Http\Adapter\Guzzle6;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use GuzzleHttp\Promise\PromiseInterface;
+use Http\Adapter\Guzzle6\Exception\UnexpectedValueException;
 use Http\Client\Exception as HttplugException;
 use Http\Promise\Promise as HttpPromise;
 use Psr\Http\Message\RequestInterface;
@@ -61,10 +62,10 @@ final class Promise implements HttpPromise
                 $this->exception = $reason;
             } elseif ($reason instanceof GuzzleExceptions\GuzzleException) {
                 $this->exception = $this->handleException($reason, $request);
-            } elseif ($reason instanceof \Exception) {
+            } elseif ($reason instanceof \Throwable) {
                 $this->exception = new HttplugException\TransferException('Invalid exception returned from Guzzle6', 0, $reason);
             } else {
-                $this->exception = new HttplugException\TransferException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
+                $this->exception = new UnexpectedValueException('Reason returned from Guzzle6 must be an Exception', 0, $reason);
             }
 
             throw $this->exception;
