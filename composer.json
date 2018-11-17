@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "ext-curl": "*",
+        "phpunit/phpunit": "^7.4",
         "php-http/client-integration-tests": "^2.0"
     },
     "provide": {
