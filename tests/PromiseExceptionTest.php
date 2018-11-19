@@ -10,7 +10,7 @@ use Http\Adapter\Guzzle6\Promise;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
 use Http\Client\Exception\RequestException;
-use PHPUnit\Framework\MockObject\MockObject;
+use Http\Client\Exception\TransferException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -22,124 +22,42 @@ use Psr\Http\Message\ResponseInterface;
 final class PromiseExceptionTest extends TestCase
 {
     /**
-     * @var RequestInterface|MockObject
+     * @param RequestInterface $request
+     * @param \Exception $guzzleException
+     * @param string $adapterExceptionClass
+     * @dataProvider exceptionThatIsThrownForGuzzleExceptionProvider
      */
-    private $request;
-
-    /**
-     * @var ResponseInterface|MockObject
-     */
-    private $response;
-
-    /**
-     * @var PromiseInterface
-     */
-    private $promise;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->request = $this->getMockBuilder(RequestInterface::class)->getMock();
-        $this->response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-        $this->promise = new \GuzzleHttp\Promise\Promise();
-    }
-
-    public function testThatNetworkExceptionIsThrownForGuzzleConnectionException()
-    {
-        $this->promise->reject(new GuzzleExceptions\ConnectException('foo', $this->request));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(NetworkException::class);
+    public function testExceptionThatIsThrownForGuzzleException(
+        RequestInterface $request,
+        \Exception $guzzleException,
+        string $adapterExceptionClass
+    ) {
+        $guzzlePromise = new \GuzzleHttp\Promise\Promise();
+        $guzzlePromise->reject($guzzleException);
+        $promise = new Promise($guzzlePromise, $request);
+        $this->expectException($adapterExceptionClass);
         $this->expectExceptionMessage('foo');
         $promise->wait();
     }
 
-    public function testThatRequestExceptionIsThrownForGuzzleTooManyRedirectsException()
+    public function exceptionThatIsThrownForGuzzleExceptionProvider(): array
     {
-        $this->promise->reject(new GuzzleExceptions\TooManyRedirectsException('foo', $this->request));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
+        $request = $this->getMockBuilder(RequestInterface::class)->getMock();
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
 
-    public function testThatHttpExceptionIsThrownForGuzzleRequestException()
-    {
-        $this->promise->reject(new GuzzleExceptions\RequestException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatHttpExceptionIsThrownForGuzzleBadResponseException()
-    {
-        $this->promise->reject(new GuzzleExceptions\BadResponseException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatHttpExceptionIsThrownForGuzzleClientException()
-    {
-        $this->promise->reject(new GuzzleExceptions\ClientException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatHttpExceptionIsThrownForGuzzleServerException()
-    {
-        $this->promise->reject(new GuzzleExceptions\ServerException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatTransferExceptionIsThrownForGuzzleTransferException()
-    {
-        $this->promise->reject(new GuzzleExceptions\TransferException('foo'));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(\Http\Client\Exception\TransferException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatRequestExceptionForGuzzleRequestException()
-    {
-        $this->promise->reject(new GuzzleExceptions\RequestException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatRequestExceptionForGuzzleBadResponseException()
-    {
-        $this->promise->reject(new GuzzleExceptions\BadResponseException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatRequestExceptionForGuzzleClientException()
-    {
-        $this->promise->reject(new GuzzleExceptions\ClientException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
-    }
-
-    public function testThatRequestExceptionForGuzzleServerException()
-    {
-        $this->promise->reject(new GuzzleExceptions\ServerException('foo', $this->request, $this->response));
-        $promise = new Promise($this->promise, $this->request);
-        $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('foo');
-        $promise->wait();
+        return [
+            [$request, new GuzzleExceptions\ConnectException('foo', $request), NetworkException::class],
+            [$request, new GuzzleExceptions\TooManyRedirectsException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\RequestException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\BadResponseException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\ClientException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\ServerException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\TransferException('foo'), TransferException::class],
+            // check cases without response
+            [$request, new GuzzleExceptions\RequestException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\BadResponseException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\ClientException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\ServerException('foo', $request), RequestException::class],
+        ];
     }
 }
