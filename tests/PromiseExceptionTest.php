@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
-use GuzzleHttp\Promise\PromiseInterface;
 use Http\Adapter\Guzzle6\Promise;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
