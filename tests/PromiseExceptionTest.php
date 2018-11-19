@@ -22,9 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 final class PromiseExceptionTest extends TestCase
 {
     /**
-     * @param RequestInterface $request
-     * @param \Exception $guzzleException
-     * @param string $adapterExceptionClass
      * @dataProvider exceptionThatIsThrownForGuzzleExceptionProvider
      */
     public function testExceptionThatIsThrownForGuzzleException(
