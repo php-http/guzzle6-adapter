@@ -25,14 +25,13 @@ final class PromiseExceptionTest extends TestCase
      */
     public function testExceptionThatIsThrownForGuzzleException(
         RequestInterface $request,
-        \Exception $guzzleException,
+        $reason,
         string $adapterExceptionClass
     ) {
         $guzzlePromise = new \GuzzleHttp\Promise\Promise();
-        $guzzlePromise->reject($guzzleException);
+        $guzzlePromise->reject($reason);
         $promise = new Promise($guzzlePromise, $request);
         $this->expectException($adapterExceptionClass);
-        $this->expectExceptionMessage('foo');
         $promise->wait();
     }
 
@@ -54,6 +53,10 @@ final class PromiseExceptionTest extends TestCase
             [$request, new GuzzleExceptions\BadResponseException('foo', $request), RequestException::class],
             [$request, new GuzzleExceptions\ClientException('foo', $request), RequestException::class],
             [$request, new GuzzleExceptions\ServerException('foo', $request), RequestException::class],
+            // Non PSR-18 Exceptions thrown
+            [$request, new \Exception('foo'), \RuntimeException::class],
+            [$request, new \Error('foo'), \RuntimeException::class],
+            [$request, 'whatever', \UnexpectedValueException::class],
         ];
     }
 }
