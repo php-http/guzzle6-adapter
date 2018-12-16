@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
+use Http\Adapter\Guzzle6\Exception\UnexpectedValueException;
 use Http\Adapter\Guzzle6\Promise;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\NetworkException;
@@ -54,9 +55,9 @@ final class PromiseExceptionTest extends TestCase
             [$request, new GuzzleExceptions\ClientException('foo', $request), RequestException::class],
             [$request, new GuzzleExceptions\ServerException('foo', $request), RequestException::class],
             // Non PSR-18 Exceptions thrown
-            [$request, new \Exception('foo'), \RuntimeException::class],
-            [$request, new \Error('foo'), \RuntimeException::class],
-            [$request, 'whatever', \UnexpectedValueException::class],
+            [$request, new \Exception('foo'), TransferException::class],
+            [$request, new \Error('foo'), TransferException::class],
+            [$request, 'whatever', UnexpectedValueException::class],
         ];
     }
 }
