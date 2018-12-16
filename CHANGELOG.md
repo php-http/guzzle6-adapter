@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Function `sendRequest` of `\Http\Adapter\Guzzle6\Client` used to throw a `\UnexpectedValueException`. Now it throws a 
+`Http\Adapter\Guzzle6\Exception\UnexpectedValueException` that extends the `\UnexpectedValueException` and implements
+the `Psr\Http\Client\ClientExceptionInterface`. This is done in order to be PSR-18 compliant.
+
+- Function `sendRequest` of `\Http\Adapter\Guzzle6\Client` used to throw a `\RuntimeException`. Now it throws a 
+`Http\Client\Exception\TransferException` that extends the `\RuntimeException` and implements
+the `Psr\Http\Client\ClientExceptionInterface`. This is done in order to be PSR-18 compliant.
 
 ## [2.0.0] - 2018-11-14
 
