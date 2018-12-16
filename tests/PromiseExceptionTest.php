@@ -1,60 +1,62 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Http\Adapter\Guzzle6\Tests;
 
 use GuzzleHttp\Exception as GuzzleExceptions;
 use Http\Adapter\Guzzle6\Promise;
+use Http\Client\Exception\HttpException;
+use Http\Client\Exception\NetworkException;
+use Http\Client\Exception\RequestException;
+use Http\Client\Exception\TransferException;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @author George Mponos <gmponos@gmail.com>
  */
-class PromiseExceptionTest extends TestCase
+final class PromiseExceptionTest extends TestCase
 {
-    public function testGetException()
+    /**
+     * @dataProvider exceptionThatIsThrownForGuzzleExceptionProvider
+     */
+    public function testExceptionThatIsThrownForGuzzleException(
+        RequestInterface $request,
+        $reason,
+        string $adapterExceptionClass
+    ) {
+        $guzzlePromise = new \GuzzleHttp\Promise\Promise();
+        $guzzlePromise->reject($reason);
+        $promise = new Promise($guzzlePromise, $request);
+        $this->expectException($adapterExceptionClass);
+        $promise->wait();
+    }
+
+    public function exceptionThatIsThrownForGuzzleExceptionProvider(): array
     {
-        $request = $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock();
-        $response = $this->getMockBuilder('Psr\Http\Message\ResponseInterface')->getMock();
-        $promise = $this->getMockBuilder('GuzzleHttp\Promise\PromiseInterface')->getMock();
+        $request = $this->getMockBuilder(RequestInterface::class)->getMock();
+        $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
 
-        $adapter = new Promise($promise, $request);
-        $method = new \ReflectionMethod('Http\Adapter\Guzzle6\Promise', 'handleException');
-        $method->setAccessible(true);
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\ConnectException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\NetworkException', $outputException, "Guzzle's ConnectException should be converted to a NetworkException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\TooManyRedirectsException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\RequestException', $outputException, "Guzzle's TooManyRedirectsException should be converted to a RequestException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\RequestException('foo', $request, $response), $request);
-        $this->assertInstanceOf('Http\Client\Exception\HttpException', $outputException, "Guzzle's RequestException should be converted to a HttpException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\BadResponseException('foo', $request, $response), $request);
-        $this->assertInstanceOf('Http\Client\Exception\HttpException', $outputException, "Guzzle's BadResponseException should be converted to a HttpException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\ClientException('foo', $request, $response), $request);
-        $this->assertInstanceOf('Http\Client\Exception\HttpException', $outputException, "Guzzle's ClientException should be converted to a HttpException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\ServerException('foo', $request, $response), $request);
-        $this->assertInstanceOf('Http\Client\Exception\HttpException', $outputException, "Guzzle's ServerException should be converted to a HttpException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\TransferException('foo'), $request);
-        $this->assertInstanceOf('Http\Client\Exception\TransferException', $outputException, "Guzzle's TransferException should be converted to a TransferException");
-
-        /*
-         * Test RequestException without response
-         */
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\RequestException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\RequestException', $outputException, "Guzzle's RequestException with no response should be converted to a RequestException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\BadResponseException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\RequestException', $outputException, "Guzzle's BadResponseException with no response should be converted to a RequestException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\ClientException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\RequestException', $outputException, "Guzzle's ClientException with no response should be converted to a RequestException");
-
-        $outputException = $method->invoke($adapter, new GuzzleExceptions\ServerException('foo', $request), $request);
-        $this->assertInstanceOf('Http\Client\Exception\RequestException', $outputException, "Guzzle's ServerException with no response should be converted to a RequestException");
+        return [
+            [$request, new GuzzleExceptions\ConnectException('foo', $request), NetworkException::class],
+            [$request, new GuzzleExceptions\TooManyRedirectsException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\RequestException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\BadResponseException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\ClientException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\ServerException('foo', $request, $response), HttpException::class],
+            [$request, new GuzzleExceptions\TransferException('foo'), TransferException::class],
+            // check cases without response
+            [$request, new GuzzleExceptions\RequestException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\BadResponseException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\ClientException('foo', $request), RequestException::class],
+            [$request, new GuzzleExceptions\ServerException('foo', $request), RequestException::class],
+            // Non PSR-18 Exceptions thrown
+            [$request, new \Exception('foo'), \RuntimeException::class],
+            [$request, new \Error('foo'), \RuntimeException::class],
+            [$request, 'whatever', \UnexpectedValueException::class],
+        ];
     }
 }
