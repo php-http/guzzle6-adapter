@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Http\Adapter\Guzzle6\Tests;
 
 use Http\Adapter\Guzzle6\Client;
