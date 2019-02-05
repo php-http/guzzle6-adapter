@@ -25,6 +25,11 @@ final class Client implements HttpClient, HttpAsyncClient
      */
     private $client;
 
+    /**
+     * If you pass a Guzzle instance as $client, make sure to configure Guzzle to not
+     * throw exceptions on HTTP error status codes, or this adapter will violate PSR-18.
+     * See also self::buildClient at the bottom of this class.
+     */
     public function __construct(?ClientInterface $client = null)
     {
         if (!$client) {
