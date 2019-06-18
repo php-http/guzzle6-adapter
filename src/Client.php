@@ -30,7 +30,7 @@ final class Client implements HttpClient, HttpAsyncClient
      * throw exceptions on HTTP error status codes, or this adapter will violate PSR-18.
      * See also self::buildClient at the bottom of this class.
      */
-    public function __construct(?ClientInterface $client = null)
+    public function __construct(ClientInterface $client = null)
     {
         if (!$client) {
             $client = self::buildClient();
