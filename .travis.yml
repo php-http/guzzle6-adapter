@@ -9,6 +9,7 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - nightly
 
 env:
     global:
@@ -19,8 +20,6 @@ branches:
         - /^analysis-.*$/
 
 matrix:
-    allow_failures:
-        - php: hhvm
     fast_finish: true
     include:
         - php: 7.1
