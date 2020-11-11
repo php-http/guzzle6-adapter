@@ -9,6 +9,7 @@
 
 **Guzzle 6 HTTP Adapter.**
 
+**Note**: Guzzle 6 is not compatible with PHP 8. If you need a PSR-18 client, use PSR-18 and Guzzle 7 which natively implements PSR-18. If you need the HTTPlug interfaces for asynchronous calls or for a system that still requires HTTPlug, use the [guzzle7-adapter](https://github.com/php-http/guzzle7-adapter/) instead of this repository.
 
 ## Install
 
