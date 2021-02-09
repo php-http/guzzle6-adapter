@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
         "php-http/httplug": "^2.0",
         "psr/http-client": "^1.0",
         "guzzlehttp/guzzle": "^6.0"
