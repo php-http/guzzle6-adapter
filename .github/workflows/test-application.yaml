@@ -23,12 +23,17 @@ jobs:
                     - php-version: '7.1'
                       dependencies: 'lowest'
                       coverage: 'true'
-                      text-ci: 'true'
+                      test-command: 'test-ci'
                     - php-version: '7.1'
+                      test-command: 'test'
                     - php-version: '7.2'
+                      test-command: 'test'
                     - php-version: '7.3'
+                      test-command: 'test'
                     - php-version: '7.4'
+                      test-command: 'test'
                     - php-version: '8.0'
+                      test-command: 'test'
 
         steps:
             - name: Checkout project
@@ -50,12 +55,7 @@ jobs:
               run: vendor/bin/http_test_server > /dev/null 2>&1 &
 
             - name: Execute test
-              if: "'true' != ${{ matrix.test-ci }}"
-              run: composer test
-
-            - name: Execute test-ci
-              if: ${{ matrix.text-ci }}
-              run: composer test-ci
+              run: composer ${{ matrix.test-command }}
 
             - name: Coverage
               if: ${{ matrix.coverage }}
