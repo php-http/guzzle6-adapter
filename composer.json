@@ -15,15 +15,15 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
         "php-http/httplug": "^2.0",
         "psr/http-client": "^1.0",
         "guzzlehttp/guzzle": "^6.0"
     },
     "require-dev": {
         "ext-curl": "*",
-        "phpunit/phpunit": "^7.4",
-        "php-http/client-integration-tests": "^2.0"
+        "phpunit/phpunit": "^7.4 || ^8.4",
+        "php-http/client-integration-tests": "^2.0 || ^3.0"
     },
     "provide": {
         "php-http/client-implementation": "1.0",

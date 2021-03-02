@@ -1,0 +1,64 @@
+name: Test application
+
+on:
+    pull_request:
+    push:
+        branches:
+            - 'master'
+            - '[0-9]+.x'
+            - '[0-9]+.[0-9]+'
+            - '[0-9]+.[0-9]+.x'
+
+jobs:
+    test:
+        name: 'PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}'
+        runs-on: ubuntu-20.04
+        env:
+            COVERAGE: ${{ matrix.coverage }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - php-version: '7.1'
+                      dependencies: 'lowest'
+                      coverage: 'true'
+                      test-command: 'test-ci'
+                    - php-version: '7.1'
+                      test-command: 'test'
+                    - php-version: '7.2'
+                      test-command: 'test'
+                    - php-version: '7.3'
+                      test-command: 'test'
+                    - php-version: '7.4'
+                      test-command: 'test'
+                    - php-version: '8.0'
+                      test-command: 'test'
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v2
+
+            - name: Install and configure PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  tools: 'composer:v2'
+
+            - name: Install dependencies with Composer
+              uses: ramsey/composer-install@v1
+              with:
+                  dependency-versions: ${{ matrix.dependencies }}
+                  composer-options: --prefer-dist --no-suggest
+
+            - name: Start HTTP Test Server
+              run: vendor/bin/http_test_server > /dev/null 2>&1 &
+
+            - name: Execute test
+              run: composer ${{ matrix.test-command }}
+
+            - name: Coverage
+              if: ${{ matrix.coverage }}
+              run: |
+                  wget https://scrutinizer-ci.com/ocular.phar
+                  php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml

@@ -13,11 +13,10 @@ use PHPUnit\Framework\TestCase;
  */
 class PromiseTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     */
     public function testNonDomainExceptionIsHandled()
     {
+        $this->expectException(\Exception::class);
+
         $request = $this->prophesize('Psr\Http\Message\RequestInterface');
         $promise = new RejectedPromise(new \Exception());
 
